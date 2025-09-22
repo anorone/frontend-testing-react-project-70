@@ -1,5 +1,6 @@
 ### Tests and linter status:
-[![Actions Status](https://github.com/anorone/frontend-testing-react-project-70/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/anorone/frontend-testing-react-project-70/actions)
+[![Actions Status](https://github.com/anorone/frontend-testing-react-project-70/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/anorone/frontend-testing-react-project-70/actions/workflows/hexlet-check.yml)
+[![Actions Status](https://github.com/anorone/frontend-testing-react-project-70/actions/workflows/node-ci.yml/badge.svg)](https://github.com/anorone/frontend-testing-react-project-70/actions/workflows/node-ci.yml)
 
 ## Usage
 ### How to run app
