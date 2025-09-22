@@ -1,0 +1,15 @@
+name: node CI
+on: push
+jobs:
+  code-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v5
+      - name: dependency installation
+        run: npm ci
+      - name: check execution
+        run: |
+          npm run lint
+          npm run test
+
