@@ -26,6 +26,7 @@ export default defineConfig([
     rules: {
       ...testingLibrary.configs['flat/react'].rules,
       ...jestDom.configs['flat/recommended'].rules,
+      'testing-library/no-manual-cleanup': 'warn',
     }
   },
 ]);
