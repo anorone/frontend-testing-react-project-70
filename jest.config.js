@@ -1,6 +1,7 @@
 /** @type {import('jest').Config} */
 const config = {
   injectGlobals: false,
+  setupFiles: ['<rootDir>/setupEnv.js'],
   setupFilesAfterEnv: ['<rootDir>/setupTests.js'],
   coverageProvider: 'v8',
   testEnvironment: 'jest-fixed-jsdom',

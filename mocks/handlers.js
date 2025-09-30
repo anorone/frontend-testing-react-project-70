@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { StatusCodes } from 'http-status-codes';
 
-const baseUrl = 'http://localhost/api/v1';
+const baseUrl = process.env.API_URL;
 
 let nextId = 1;
 let tasks = [];
