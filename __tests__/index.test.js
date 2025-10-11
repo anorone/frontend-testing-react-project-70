@@ -142,4 +142,26 @@ describe('basic flow of using the app', () => {
     await user.click(customList);
     expect(within(taskContainer).getByRole('checkbox')).not.toBeChecked();
   });
+
+  test('lists are re-created with an empty state', async () => {
+    const user = userEvent.setup();
+    const defaultListName = 'primary';
+    const defaultLists = [{ id: 1, name: defaultListName, removable: true }];
+    const initialState = { lists: defaultLists, currentListId: 1 };
+    render(init(initialState));
+    const taskForm = screen.getByTestId('task-form');
+    const taskInput = within(taskForm).getByRole('textbox');
+    const taskName = 'walk';
+    await user.type(taskInput, taskName);
+    await user.click(within(taskForm).getByRole('button', { name: /add/i }));
+    const listContainer = screen.getByTestId('lists');
+    const defaultList = within(listContainer).getByRole('listitem');
+    const removeButton = within(defaultList).getByRole('button', { name: /remove/i });
+    await user.click(removeButton);
+    const listForm = screen.getByTestId('list-form');
+    const listInput = within(listForm).getByRole('textbox');
+    await user.type(listInput, defaultListName);
+    await user.click(within(listForm).getByRole('button', { name: /add/i }));
+    expect(screen.getByText(/tasks list is empty/i)).toBeInTheDocument();
+  });
 });
