@@ -49,24 +49,52 @@ describe('normal flow of using the app', () => {
     await user.click(submitButton);
     await screen.findByText(secondTaskName);
     expect(screen.queryByText(/tasks list is empty/i)).not.toBeInTheDocument();
-    const taskList = screen.getByTestId('tasks');
-    const tasks = within(taskList).getAllByRole('listitem');
+    const taskContainer = screen.getByTestId('tasks');
+    const tasks = within(taskContainer).getAllByRole('listitem');
     expect(tasks).toHaveLength(2);
 
     const firstTask = screen.getByRole('checkbox', { name: firstTaskName });
     expect(firstTask).not.toBeChecked();
     await user.click(firstTask);
     await waitFor(() => expect(firstTask).toBeChecked());
-    expect(within(taskList).getAllByRole('checkbox')[1]).toBe(firstTask);
+    expect(within(taskContainer).getAllByRole('checkbox')[1]).toBe(firstTask);
     await user.click(firstTask);
     await waitFor(() => expect(firstTask).not.toBeChecked());
-    expect(within(taskList).getAllByRole('checkbox')[0]).toBe(firstTask);
+    expect(within(taskContainer).getAllByRole('checkbox')[0]).toBe(firstTask);
 
     const taskToDelete = tasks[0];
     const removeButton = within(taskToDelete).getByRole('button', { name: /remove/i });
     await user.click(removeButton);
     await waitFor(() => expect(taskToDelete).not.toBeInTheDocument());
-    const updatedTasks = within(taskList).getAllByRole('listitem');
+    const updatedTasks = within(taskContainer).getAllByRole('listitem');
     expect(updatedTasks).toHaveLength(1);
+  });
+
+  test('list manipulation', async () => {
+    const user = userEvent.setup();
+    const defaultLists = [{ id: 1, name: 'primary', removable: false }];
+    const initialState = { lists: defaultLists, currentListId: 1 };
+    render(init(initialState));
+
+    const listContainer = screen.getByTestId('lists');
+    const defaultList = within(listContainer).getByRole('button', { name: /primary/i });
+    expect(defaultList).toBeInTheDocument();
+    expect(within(listContainer).getAllByRole('listitem')).toHaveLength(1);
+
+    const listForm = screen.getByTestId('list-form');
+    const listInput = within(listForm).getByRole('textbox');
+    const submitButton = within(listForm).getByRole('button', { name: /add/i });
+    const customListName = 'secondary';
+    await user.type(listInput, customListName);
+    await user.click(submitButton);
+    await within(listContainer).findByRole('button', { name: customListName });
+    const lists = within(listContainer).getAllByRole('listitem');
+    expect(lists).toHaveLength(2);
+
+    const customList = lists[1];
+    const removeButton = within(customList).getByRole('button', { name: /remove/i });
+    await user.click(removeButton);
+    await waitFor(() => expect(customList).not.toBeInTheDocument());
+    expect(within(listContainer).getAllByRole('listitem')).toHaveLength(1);
   });
 });
