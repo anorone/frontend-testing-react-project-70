@@ -97,4 +97,14 @@ describe('normal flow of using the app', () => {
     await waitFor(() => expect(customList).not.toBeInTheDocument());
     expect(within(listContainer).getAllByRole('listitem')).toHaveLength(1);
   });
+
+  test('non-removable lists do not have remove button', () => {
+    const defaultLists = [{ id: 1, name: 'primary', removable: false }];
+    const initialState = { lists: defaultLists, currentListId: 1 };
+    render(init(initialState));
+    const listContainer = screen.getByTestId('lists');
+    const defaultList = within(listContainer).getByRole('listitem');
+    const removeButton = within(defaultList).queryByRole('button', { name: /remove/i });
+    expect(removeButton).not.toBeInTheDocument();
+  });
 });
