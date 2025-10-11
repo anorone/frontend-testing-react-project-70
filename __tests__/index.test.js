@@ -31,7 +31,7 @@ describe('normal flow of using the app', () => {
     server.close();
   });
 
-  test('task manipulation', async () => {
+  test('adding, updating and removing tasks', async () => {
     const user = userEvent.setup();
     const initialState = { currentListId: 1 };
     render(init(initialState));
@@ -70,7 +70,7 @@ describe('normal flow of using the app', () => {
     expect(updatedTasks).toHaveLength(1);
   });
 
-  test('list manipulation', async () => {
+  test('adding and removing lists', async () => {
     const user = userEvent.setup();
     const defaultLists = [{ id: 1, name: 'primary', removable: false }];
     const initialState = { lists: defaultLists, currentListId: 1 };
