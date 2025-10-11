@@ -14,7 +14,7 @@ const buildTask = (listId, text) => ({
   touched: Date.now(),
 });
 
-const handlers = [
+const taskHandlers = [
   http.post(`${baseUrl}/lists/:listId/tasks`, async ({ request, params }) => {
     const requestBody = await request.json();
     const task = buildTask(Number(params.listId), requestBody.text);
@@ -40,4 +40,4 @@ const handlers = [
   }),
 ];
 
-export default handlers;
+export default taskHandlers;
