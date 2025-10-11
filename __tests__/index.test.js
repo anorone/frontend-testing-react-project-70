@@ -20,7 +20,7 @@ test('initiating the app', () => {
   expect(screen.getByRole('heading', { name: /tasks/i })).toBeInTheDocument();
 });
 
-describe('normal flow of using the app', () => {
+describe('basic flow of using the app', () => {
   beforeAll(() => {
     server.listen({
       onUnhandledRequest: 'error',
