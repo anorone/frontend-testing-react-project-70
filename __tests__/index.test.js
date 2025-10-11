@@ -107,4 +107,39 @@ describe('normal flow of using the app', () => {
     const removeButton = within(defaultList).queryByRole('button', { name: /remove/i });
     expect(removeButton).not.toBeInTheDocument();
   });
+
+  test('tasks from different lists do not affect each other', async () => {
+    const user = userEvent.setup();
+    const defaultLists = [
+      { id: 1, name: 'primary', removable: false },
+      { id: 2, name: 'secondary', removable: true },
+    ];
+    const initialState = { lists: defaultLists, currentListId: 1 };
+    render(init(initialState));
+    const taskForm = screen.getByTestId('task-form');
+    const taskInput = within(taskForm).getByRole('textbox');
+    const submitButton = within(taskForm).getByRole('button', { name: /add/i });
+    const firstTaskName = 'eat';
+    await user.type(taskInput, firstTaskName);
+    await user.click(submitButton);
+    const secondTaskName = 'sleep';
+    await user.type(taskInput, secondTaskName);
+    await user.click(submitButton);
+    const customList = screen.getByRole('button', { name: /secondary/i });
+    await user.click(customList);
+    expect(screen.getByText(/tasks list is empty/i)).toBeInTheDocument();
+    await user.type(taskInput, firstTaskName);
+    await user.click(submitButton);
+    const defaultList = screen.getByRole('button', { name: /primary/i });
+    await user.click(defaultList);
+    const taskContainer = screen.getByTestId('tasks');
+    expect(within(taskContainer).getAllByRole('listitem')).toHaveLength(2);
+    const tasks = within(taskContainer).getAllByRole('listitem');
+    const removeButton = within(tasks[0]).getByRole('button', { name: /remove/i });
+    await user.click(removeButton);
+    const taskToComplete = within(taskContainer).getByRole('checkbox');
+    await user.click(taskToComplete);
+    await user.click(customList);
+    expect(within(taskContainer).getByRole('checkbox')).not.toBeChecked();
+  });
 });
