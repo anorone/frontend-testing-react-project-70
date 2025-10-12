@@ -3,7 +3,7 @@
 [![Actions Status](https://github.com/anorone/frontend-testing-react-project-70/actions/workflows/node-ci.yml/badge.svg)](https://github.com/anorone/frontend-testing-react-project-70/actions/workflows/node-ci.yml)
 
 ## Usage
-### Example .env file
+### Example .env.test file
 ```dotenv
 API_URL="http://localhost/api/v1"
 ```
