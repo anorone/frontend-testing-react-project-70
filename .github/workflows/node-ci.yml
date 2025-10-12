@@ -1,5 +1,7 @@
 name: node CI
 on: push
+env:
+  API_URL: ${{ vars.API_URL }}
 jobs:
   code-check:
     runs-on: ubuntu-latest
