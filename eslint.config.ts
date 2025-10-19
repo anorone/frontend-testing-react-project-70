@@ -1,21 +1,24 @@
 import js from '@eslint/js';
 import globals from 'globals';
-import { defineConfig } from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 import testingLibrary from 'eslint-plugin-testing-library';
 import jestDom from 'eslint-plugin-jest-dom';
 
-/** @type {import('eslint').Linter.Config[]} */
 export default defineConfig([
+  globalIgnores(['node_modules', 'coverage/']),
   {
-    files: ['**/*.{js,mjs,cjs,jsx}'],
+    files: ['**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx}'],
     plugins: { js },
     extends: ['js/recommended'],
     languageOptions: {
       globals: { ...globals.node },
     },
   },
+  tseslint.configs.strict,
+  tseslint.configs.stylistic,
   {
-    files: ['__tests__/**/*.test.{js,mjs,cjs,jsx}'],
+    files: ['__tests__/**/*.test.{js,mjs,cjs,jsx,ts,mts,cts,tsx}'],
     languageOptions: {
       globals: { ...globals.browser },
     },
@@ -26,7 +29,8 @@ export default defineConfig([
     rules: {
       ...testingLibrary.configs['flat/react'].rules,
       ...jestDom.configs['flat/recommended'].rules,
-      'testing-library/no-manual-cleanup': 'warn',
+      // Jest globals are not injected automatically
+      'testing-library/no-manual-cleanup': 'off',
     }
   },
 ]);

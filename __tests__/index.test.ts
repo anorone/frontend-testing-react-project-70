@@ -1,6 +1,4 @@
-// @ts-check
-
-import { afterAll, beforeAll, beforeEach, describe, expect, test } from '@jest/globals';
+import { afterAll, beforeAll, afterEach, describe, expect, test } from '@jest/globals';
 
 import init from '@hexlet/react-todo-app-with-backend';
 import { screen, render, cleanup, within, waitFor } from '@testing-library/react';
@@ -8,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 
 import server from '../mocks/server';
 
-beforeEach(() => {
+afterEach(() => {
   cleanup();
 });
 

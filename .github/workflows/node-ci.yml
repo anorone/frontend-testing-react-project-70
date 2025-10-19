@@ -12,6 +12,7 @@ jobs:
         run: npm ci
       - name: check execution
         run: |
+          npm run check
           npm run lint
           npm run test
 
